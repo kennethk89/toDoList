@@ -14,7 +14,8 @@ class App extends Component {
           item: 'text my hamster',
           status: false
         }
-      ]
+      ],
+      input: ''
     }
   }
 
@@ -28,30 +29,44 @@ class App extends Component {
   }
 
   checkBox = (id) => {
-
     this.state.toDos[id].status = !this.state.toDos[id].status
-    this.setState ({
+    this.setState({
       toDos: this.state.toDos
     })
   }
 
-  clearItem = (id) => {
-
-    let undone = this.state.toDos.filter(toDos=>toDos.status === false)
+  clearItem = () => {
+    let undone = this.state.toDos.filter(toDos => toDos.status === false)
     this.setState({
       toDos: undone
     })
   }
 
-  render() {
+  handleChange = (event) => {
+    this.setState({
+      input: event.target.value
+    })
+  }
 
+  submitItem = () => {
+    this.addItem(this.state.input)
+    this.setState({
+      input: ''
+    })
+  }
+
+  render() {
     return (
       <div className="App">
         <h1>To-do's to do</h1>
-        <NewItem addItem={this.addItem} />
-        <ClearItem clearItem = {this.clearItem} />
+        <NewItem addItem={this.addItem}
+          submitItem={this.submitItem}
+          handleChange={this.handleChange}
+          input={this.state.input}
+          submitItem={this.submitItem} />
+        <ClearItem clearItem={this.clearItem} />
         <ListItems toDos={this.state.toDos}
-                  checkBox = {this.checkBox} />
+          checkBox={this.checkBox} />
       </div>
     );
   }
